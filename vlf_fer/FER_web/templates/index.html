@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Emotion Classifier</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Emotion Classifier</h1>
+        <form action="/classify" method="post" enctype="multipart/form-data" class="mt-3">
+            <div class="form-group">
+                <label for="image">Upload Image:</label>
+                <input type="file" name="image" id="image" accept="image/*" class="form-control-file">
+            </div>
+            <div class="form-group">
+                <button type="submit" name="model" value="vgg16" class="btn btn-primary">VGG-16</button>
+                <button type="submit" name="model" value="vit" class="btn btn-primary">ViT</button>
+            </div>
+        </form>
+
+        {% if result %}
+        <div id="result" class="mt-4">
+            <p>Class: {{ result.class }}</p>
+            <p>Confidence: {{ result.confidence }}%</p>
+            <p>Probabilities:</p>
+            <ul>
+                {% for label, probability in result.probabilities.items() %}
+                <li>{{ label }}: {{ probability }}%</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        {% if error %}
+        <div id="error" class="mt-4 alert alert-danger" role="alert">
+            {{ error }}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
